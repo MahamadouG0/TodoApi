@@ -1,19 +1,19 @@
-# Étape 1 : build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 WORKDIR /src
 
+COPY TodoApi.csproj .
+
+RUN dotnet restore "TodoApi.csproj"
+
 COPY . .
 
-RUN dotnet restore "TodoApi/TodoApi.csproj"
-
-RUN dotnet publish "TodoApi/TodoApi.csproj" \
+RUN dotnet publish "TodoApi.csproj" \
     -c Release \
     -o /app/publish \
     /p:UseAppHost=false
 
 
-# Étape 2 : exécution
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 
 WORKDIR /app
